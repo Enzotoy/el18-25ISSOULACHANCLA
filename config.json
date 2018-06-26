@@ -1,4 +1,5 @@
-[
-  "username" : kesstucrois
-  "password" : kesstucroisencore
-  "shared_secret" : ptdrtki
+{
+  "username" : "kesstucrois"
+  "password" : "kesstucroisencore"
+  "shared_secret" : "ptdrtki"
+}
