@@ -1,8 +1,8 @@
 const SteamUser = require('steam-user');
 const SteamTotp = require('steam-totp');
 const SteamCommunity = require('steamcommunity');
-const TradeOfferManagner = require ('steam-tradeoffer-manager');
-const Request = require ('Request');
+const TradeOfferManagner = require('steam-tradeoffer-manager');
+const Request = require('Request');
 
 const config = require('./config.json');
 const trade = require('./trade.js');
@@ -10,9 +10,9 @@ const trade = require('./trade.js');
 const client = new SteamUser();
 const community = new SteamCommunity();
 const manager = new TradeOfferManagner({
-	steam: client,
-	community: community,
-	language: 'en'
+    steam: client,
+    community: community,
+    language: 'en'
 });
 
 const logOnOptions = {
@@ -24,26 +24,40 @@ const logOnOptions = {
 client.logOn(logOnOptions);
 
 client.on('loggedOn', () => {
-  console.log('Logged into Steam');
+    console.log('Logged into Steam');
 
-  client.setPersona(SteamUser.Steam.EPersonaState.Online);
-  client.gamesPlayed(440);
+    client.setPersona(SteamUser.Steam.EPersonaState.Online);
+    client.gamesPlayed(440);
 });
 
-	client.on('webSession', (sessionid, cookies) => {
-		manager.setCookies(cookies);
+client.on('webSession', (sessionid, cookies) => {
+    manager.setCookies(cookies);
 
-		community.setCookies(cookies);
-		community.startConfirmationChecker(10000, '');
-
+    community.setCookies(cookies);
 });
 
-	client.on('friendRelationship', (steamid, relationship) => {
-		if (relationship === 2) {
-			client.addFriend(steamid);
-			client.chatMessage(steamid, "Hello, i'm a bot ! Thank's for adding me ! If you have any question, add my owner. the link of my owner profile is on my profile ! :)")
-			console.log("J'ai ajouté quelqu'un en ami")
-		}
-	});
+client.on('friendRelationship', (steamid, relationship) => {
+    if (relationship === 2) {
+        client.addFriend(steamid);
+        client.chatMessage(steamid, "Hello, i'm a bot ! Thank's for adding me ! If you have any question, add my owner. the link of my owner profile is on my profile ! :)")
+        console.log("J'ai ajouté quelqu'un en ami")
+    }
+});
 
-trade.printMsg();
+
+
+
+// TRADING SHIT HERE:
+
+manager.on('newOffer', (offer) => {
+    console.log("New offer received from " + offer.partner);
+	
+	trade.test();
+	
+    if (offer.partner === '76561198132844160') {
+        offer.accept();
+        console.log('admin trade');
+    } else {
+        //doOtherStuff, this is when user is not admin..
+    }
+});
