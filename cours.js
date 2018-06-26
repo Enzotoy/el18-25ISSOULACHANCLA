@@ -16,9 +16,9 @@ const manager = new TradeOfferManagner({
 });
 
 const logOnOptions = {
-    accountName: (config.username),
-    password: (config.password),
-    twoFactorCode: SteamTotp.generateAuthCode(config.shared_secret)
+  accountName: config.username,
+  password: config.password,
+  twoFactorCode: SteamTotp.generateAuthCode(config.shared_secret)
 };
 
 client.logOn(logOnOptions);
